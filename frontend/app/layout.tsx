@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/animation/SmoothScroll";
 import { Footer } from "@/components/layout/Footer";
 import { ShapeDefs } from "@/components/ui/StarImage";
+import { RaysoCta } from "@/components/layout/RaysoCta";
 import { getSiteSettings } from "@/(core)/fetch/siteSettings";
 import "./globals.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ShapeDefs />
         {children}
         <Footer />
+        <RaysoCta />
       </body>
     </html>
   );
