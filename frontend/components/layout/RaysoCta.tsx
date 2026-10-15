@@ -22,9 +22,9 @@ export function RaysoCta() {
   }, []);
 
   return (
-    <div className="fixed right-8 bottom-8 z-40 flex w-60 flex-col gap-4">
+    <div className="fixed right-4 bottom-4 z-40 flex w-36 flex-col gap-1.5 md:right-6 md:bottom-6 md:w-40">
       {/* Slider */}
-      <div className="relative aspect-[2/1] overflow-hidden rounded-2xl">
+      <div className="relative aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
         <div
           className="absolute inset-0 transition-transform duration-700 ease-in-out"
           style={{ transform: `translateY(-${index * 100}%)` }}
@@ -39,9 +39,9 @@ export function RaysoCta() {
               <div className="absolute inset-0 z-10 bg-blue-950/60" />
               <div className="relative z-20 flex items-center justify-center text-center text-white">
                 {slide.type === "logo" ? (
-                  <Image src={LOGO} width={170} height={49} unoptimized alt="Rayso" className="w-2/3" />
+                  <Image src={LOGO} width={170} height={49} unoptimized alt="Rayso" className="w-3/5" />
                 ) : (
-                  <span className="px-4 text-[20px] leading-none font-bold">{slide.text}</span>
+                  <span className="px-2 text-[12px] leading-tight font-semibold">{slide.text}</span>
                 )}
               </div>
             </div>
@@ -52,7 +52,7 @@ export function RaysoCta() {
       {/* CTA */}
       <Link
         href={TEMPLATE_URL}
-        className="group relative flex items-center justify-center rounded-full bg-lime-400 px-4 py-2 text-[14px] font-bold text-neutral-900"
+        className="group relative flex items-center justify-center rounded-full bg-lime-400 px-3 py-1 text-[12px] font-semibold shadow-lg text-neutral-900"
       >
         <div className="h-[1.7em] overflow-hidden">
           <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
