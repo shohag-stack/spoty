@@ -22,7 +22,7 @@ export function RaysoCta() {
   }, []);
 
   return (
-    <div className="fixed right-4 bottom-4 z-40 flex w-36 flex-col gap-1.5 md:right-6 md:bottom-6 md:w-40">
+    <div className="fixed right-4 bottom-4 z-40 flex w-40 flex-col gap-1.5 md:right-6 md:bottom-6 md:w-44">
       {/* Slider */}
       <div className="relative aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
         <div
@@ -41,7 +41,7 @@ export function RaysoCta() {
                 {slide.type === "logo" ? (
                   <Image src={LOGO} width={170} height={49} unoptimized alt="Rayso" className="w-3/5" />
                 ) : (
-                  <span className="px-2 text-[12px] leading-tight font-semibold">{slide.text}</span>
+                  <span className="px-3 text-[15px] leading-tight font-bold">{slide.text}</span>
                 )}
               </div>
             </div>
@@ -52,7 +52,7 @@ export function RaysoCta() {
       {/* CTA */}
       <Link
         href={TEMPLATE_URL}
-        className="group relative flex items-center justify-center rounded-full bg-lime-400 px-3 py-1 text-[12px] font-semibold shadow-lg text-neutral-900"
+        className="group relative flex items-center justify-center rounded-full bg-lime-400 px-3 py-1.5 text-[14px] font-semibold shadow-lg text-neutral-900"
       >
         <div className="h-[1.7em] overflow-hidden">
           <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
