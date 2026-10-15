@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* Design tokens (from the Spoty Figma file). Tailwind's default palette,
+   type scale and radii are used for everything else. */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: #f3f3f3; /* page background */
+  --color-ink: #000000; /* text, black buttons */
+  --color-muted: #404040; /* body copy */
+  --color-subtle: #747474; /* inactive numbers, small labels */
+  --color-placeholder: #bbbbbb; /* input placeholders */
+  --color-line: #d9d9d9; /* progress tracks, dividers, quote marks */
+  --color-ring: #e6e6e6; /* outline of white round buttons */
+
+  --text-display: 5.3125rem; /* hero headline (85px) */
+  --text-display--line-height: 1;
+  --text-heading: 3.75rem; /* section headings (60px / 70px) */
+  --text-heading--line-height: 1.1667;
+  --text-title: 2.5rem; /* CTA and newsletter headings (40px) */
+  --text-title--line-height: 1.2;
+  --text-body: 1.0625rem; /* feature paragraph (17px / 25px) */
+  --text-body--line-height: 1.47;
+
+  --container-site: 90rem; /* 1440px frame; sections pad 52px (lg:px-13) inside it */
+  --radius-card: 1.875rem; /* 30px: cards and photos */
+
+  --spacing-header: 5.5rem; /* menu height; page-top sections pad below it */
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-fade-in: fade-in 0.8s var(--ease-out-expo) both;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Phone icon wiggle on hover (hero pill) */
+@keyframes ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(-14deg);
+  }
+  40%,
+  80% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
