@@ -1,47 +1,79 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
-const TEMPLATE_URL = "https://www.rayso.studio/templates/spoty-tennis-club-and-sports-academy-template";
-const BG = "https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg";
-const LOGO = "https://res.cloudinary.com/dq9ckspti/image/upload/v1777534388/rayso-logo_fgdmli.png";
+const TEMPLATE_URL = "https://www.rayso.studio/templates/spoty-tennis-club-and-sports-academy-template"
 
 const slides = [
-  { type: "logo" },
-  { type: "text", text: "Premium Next.js Templates" },
-] as const;
+  {
+    bg: 'https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg',
+    type: 'logo',
+  },
+  {
+    bg: 'https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg',
+    type: 'text',
+    text: 'Premium Next.js Templates',
+  },
+]
 
 export function RaysoCta() {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    const interval = setInterval(() => setIndex((prev) => (prev + 1) % slides.length), 2000);
-    return () => clearInterval(interval);
-  }, []);
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % slides.length)
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <div className="fixed right-4 bottom-4 z-40 flex w-40 flex-col gap-1.5 md:right-6 md:bottom-6 md:w-44">
+    <div className="fixed right-8 bottom-8 z-40 gap-4 flex flex-col">
+      
       {/* Slider */}
-      <div className="relative aspect-[2/1] overflow-hidden rounded-xl shadow-lg">
+      <div className="relative aspect-3/1.5 overflow-hidden rounded-2xl">
+
         <div
           className="absolute inset-0 transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateY(-${index * 100}%)` }}
+          style={{
+            transform: `translateY(-${index * 100}%)`,
+          }}
         >
           {slides.map((slide, i) => (
             <div
               key={i}
-              className="absolute flex h-full w-full items-center justify-center"
-              style={{ top: `${i * 100}%` }}
+              className="relative w-full h-full flex justify-center items-center"
+              style={{ top: `${i * 100}%`, position: 'absolute' }}
             >
-              <Image src={BG} alt="" fill unoptimized className="object-cover" />
-              <div className="absolute inset-0 z-10 bg-blue-950/60" />
-              <div className="relative z-20 flex items-center justify-center text-center text-white">
-                {slide.type === "logo" ? (
-                  <Image src={LOGO} width={170} height={49} unoptimized alt="Rayso" className="w-3/5" />
+              {/* BG */}
+              <Image
+                src={slide.bg}
+                alt=""
+                fill
+                unoptimized
+                className="object-cover"
+              />
+
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-blue-950/60 z-10" />
+
+              {/* Content */}
+              <div className="relative z-11 text-white text-center flex justify-center items-center">
+                {slide.type === 'logo' ? (
+                  <Image
+                    src="https://res.cloudinary.com/dq9ckspti/image/upload/v1777534388/rayso-logo_fgdmli.png"
+                    width={170}
+                    height={49}
+                    unoptimized
+                    alt="rayso-logo"
+                    className='w-2/3'
+                  />
                 ) : (
-                  <span className="px-3 text-[15px] leading-tight font-bold">{slide.text}</span>
+                  <h3 className="text-[20px] font-bold px-4 leading-none">
+                    {slide.text}
+                  </h3>
                 )}
               </div>
             </div>
@@ -52,15 +84,15 @@ export function RaysoCta() {
       {/* CTA */}
       <Link
         href={TEMPLATE_URL}
-        className="group relative flex items-center justify-center rounded-full bg-lime-400 px-3 py-1.5 text-[14px] font-semibold shadow-lg text-neutral-900"
+        className="group relative flex justify-center items-center text-[14px] px-4 py-2 rounded-full font-bold text-neutral-900 bg-lime-400"
       >
-        <div className="h-[1.7em] overflow-hidden">
-          <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
-            <span className="flex items-center justify-center">Get this Template</span>
-            <span className="flex items-center justify-center">Get this Template</span>
-          </div>
+        <div className='h-[1.7em] overflow-hidden'>
+            <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
+            <span className='flex items-center justify-center'>Get this Template</span>
+            <span className='flex items-center justify-center'>Get this Template</span>
+        </div>
         </div>
       </Link>
     </div>
-  );
+  )
 }
