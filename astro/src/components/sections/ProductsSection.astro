@@ -1,0 +1,20 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import { ProductGrid } from "@/components/islands/ProductGrid";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import type { ProductData, ProductsSectionData } from "@/types";
+
+type Props = ProductsSectionData;
+
+const { heading, text, products } = Astro.props;
+const items = products.filter((p): p is ProductData => Boolean(p));
+---
+
+<section class="my-20 md:my-35">
+  <div class="mx-auto max-w-site px-4 md:px-8 lg:px-13">
+    <Reveal>
+      <SectionHeader heading={heading} text={text} />
+    </Reveal>
+    <ProductGrid client:visible products={items} />
+  </div>
+</section>

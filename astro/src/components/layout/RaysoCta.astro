@@ -1,0 +1,53 @@
+---
+// Floating "Get this Template" card for the live demo. Delete this component
+// (and its line in layouts/BaseLayout.astro) on your own site.
+const TEMPLATE_URL = "https://www.rayso.studio/templates/spoty-tennis-club-and-sports-academy-template";
+const BG = "https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg";
+const LOGO = "https://res.cloudinary.com/dq9ckspti/image/upload/v1777534388/rayso-logo_fgdmli.png";
+---
+
+<div class="fixed right-8 bottom-8 z-40 flex flex-col gap-4">
+  <!-- Slider: the logo and the tagline take turns every 2 seconds -->
+  <div class="relative aspect-3/1.5 overflow-hidden rounded-2xl">
+    <div class="absolute inset-0 transition-transform duration-700 ease-in-out" data-rayso-slides>
+      {
+        [0, 1].map((i) => (
+          <div class="absolute flex h-full w-full items-center justify-center" style={{ top: `${i * 100}%` }}>
+            <img src={BG} alt="" class="absolute inset-0 size-full object-cover" />
+            <div class="absolute inset-0 z-10 bg-blue-950/60" />
+            <div class="relative z-11 flex items-center justify-center text-center text-white">
+              {i === 0 ? (
+                <img src={LOGO} width="170" height="49" alt="rayso-logo" class="w-2/3" />
+              ) : (
+                <h3 class="px-4 text-[20px] leading-none font-bold">Premium Astro Templates</h3>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <a
+    href={TEMPLATE_URL}
+    class="group relative flex items-center justify-center rounded-full bg-lime-400 px-4 py-2 text-[14px] font-bold text-neutral-900"
+  >
+    <div class="h-[1.7em] overflow-hidden">
+      <div class="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
+        <span class="flex items-center justify-center">Get this Template</span>
+        <span class="flex items-center justify-center">Get this Template</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<script>
+  const slides = document.querySelector<HTMLElement>("[data-rayso-slides]");
+  let index = 0;
+  if (slides) {
+    setInterval(() => {
+      index = (index + 1) % 2;
+      slides.style.transform = `translateY(-${index * 100}%)`;
+    }, 2000);
+  }
+</script>

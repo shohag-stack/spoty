@@ -1,0 +1,11 @@
+---
+type Props = { class?: string; strength?: number };
+
+// While the wrapper is hovered (mouse only), pulls the element marked data-magnetic
+// (or the first child) toward the cursor.
+const { class: className, strength = 0.25 } = Astro.props;
+---
+
+<div class={className} data-magnetic-area={strength}>
+  <slot />
+</div>

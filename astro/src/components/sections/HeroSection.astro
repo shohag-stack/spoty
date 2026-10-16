@@ -1,0 +1,72 @@
+---
+import Parallax from "@/components/animation/Parallax.astro";
+import Reveal from "@/components/animation/Reveal.astro";
+import SplitHeading from "@/components/animation/SplitHeading.astro";
+import Icon from "@/components/icons/Icon.astro";
+import { HeroBackgroundVideo } from "@/components/islands/HeroBackgroundVideo";
+import { HeroCardMedia } from "@/components/islands/HeroCardMedia";
+import Button from "@/components/ui/Button.astro";
+import SanityImage from "@/components/ui/SanityImage.astro";
+import { hasImage } from "@/lib/image";
+import { telHref } from "@/lib/utils";
+import type { HeroSectionData } from "@/types";
+
+type Props = HeroSectionData;
+
+const { backgroundImage, backgroundVideo, phoneLabel, phoneNumber, heading, button, cardAvatars, cardText, cardImage, cardVideo } =
+  Astro.props;
+const hasCard = Boolean(cardText || hasImage(cardImage));
+---
+
+<!-- Figma: the card hangs 205px below the photo; the next section starts 149px below the photo. -->
+<section class="relative lg:mb-37">
+  <div class="relative flex h-dvh min-h-160 overflow-hidden bg-ink">
+    <Parallax speed={16} class="absolute inset-x-0 -inset-y-28">
+      <SanityImage image={backgroundImage} sizes="100vw" priority />
+      {backgroundVideo?.url && <HeroBackgroundVideo client:idle video={backgroundVideo} poster={backgroundImage} />}
+    </Parallax>
+    <div class="absolute inset-0 bg-linear-to-tr from-black/55 via-black/15 to-black/25" aria-hidden="true"></div>
+
+    <div class="relative mx-auto flex w-full max-w-site flex-col justify-end px-4 pt-header pb-16 text-white md:px-8 md:pb-17.5 lg:px-13">
+      {
+        phoneNumber && (
+          <a
+            href={telHref(phoneNumber)}
+            class="group/phone mb-8 inline-flex w-fit items-center gap-1.75 rounded-full border border-white bg-white/20 py-1.75 pr-8.75 pl-1.75 text-base font-medium backdrop-blur-[2px] transition-[background-color,color,scale] duration-300 hover:bg-white hover:text-ink active:scale-96 md:mb-10"
+          >
+            <span class="grid size-9 place-items-center rounded-full bg-white text-ink transition-colors duration-300 group-hover/phone:bg-ink group-hover/phone:text-white">
+              <Icon name="phone" class="group-hover/phone:animate-[ring_0.6s_ease-in-out]" />
+            </span>
+            {phoneLabel || phoneNumber}
+          </a>
+        )
+      }
+      <SplitHeading text={heading} class="max-w-240 text-5xl font-medium text-balance sm:text-6xl lg:max-w-200 lg:text-display" />
+      <Button link={button} variant="white" class="mt-8 w-fit md:mt-10" />
+    </div>
+  </div>
+
+  {
+    hasCard && (
+      <div class="relative -mt-16 px-4 md:px-8 lg:pointer-events-none lg:absolute lg:inset-x-0 lg:-bottom-51.25 lg:mt-0 lg:px-13">
+        <Reveal delay={0.5} class="mx-auto flex max-w-site justify-end">
+          <div class="pointer-events-auto w-full overflow-hidden bg-white [clip-path:url(#hero-card-clip)] sm:max-w-96.5">
+            <div class="px-7.75 pt-25 pb-10">
+              {cardAvatars && cardAvatars.length > 0 && (
+                <div class="mb-4.25 flex -space-x-3.75">
+                  {cardAvatars.map((avatar) => (
+                    <div class="relative size-14.25 overflow-hidden rounded-full ring-2 ring-white">
+                      <SanityImage image={avatar} sizes="56px" />
+                    </div>
+                  ))}
+                </div>
+              )}
+              {cardText && <p class="text-3xl font-medium">{cardText}</p>}
+            </div>
+            {hasImage(cardImage) && <HeroCardMedia client:visible image={cardImage} video={cardVideo} />}
+          </div>
+        </Reveal>
+      </div>
+    )
+  }
+</section>

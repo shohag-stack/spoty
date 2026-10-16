@@ -1,0 +1,13 @@
+---
+import SectionRenderer from "@/components/sections/SectionRenderer.astro";
+import { getPageBySlug } from "@/fetch/page";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// The coaches listing is the page with slug "coaches"; this folder also holds /coaches/<coach>.
+const page = await getPageBySlug("coaches");
+if (!page) return Astro.rewrite("/404");
+---
+
+<BaseLayout title={page.title} description={page.description} menuColor={page.menuColor}>
+  <SectionRenderer sections={page.sections} />
+</BaseLayout>

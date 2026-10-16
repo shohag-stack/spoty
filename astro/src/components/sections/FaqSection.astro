@@ -1,0 +1,29 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import { FaqAccordion } from "@/components/islands/FaqAccordion";
+import Button from "@/components/ui/Button.astro";
+import type { FaqData, FaqSectionData } from "@/types";
+
+type Props = FaqSectionData;
+
+const { heading, text, button, faqs } = Astro.props;
+const items = faqs.filter((f): f is FaqData => Boolean(f));
+---
+
+{
+  items.length > 0 && (
+    <section class="my-20 md:my-35">
+      <div class="mx-auto grid max-w-site gap-10 px-4 md:px-8 lg:grid-cols-[2fr_3fr] lg:gap-20 lg:px-13">
+        <Reveal class="lg:sticky lg:top-28 lg:self-start">
+          <h2 class="max-w-md text-4xl font-medium text-balance md:text-5xl lg:text-heading">{heading}</h2>
+          {text && <p class="mt-6 max-w-sm leading-relaxed text-muted">{text}</p>}
+          <Button link={button} class="mt-8" />
+        </Reveal>
+
+        <Reveal>
+          <FaqAccordion client:visible items={items} />
+        </Reveal>
+      </div>
+    </section>
+  )
+}

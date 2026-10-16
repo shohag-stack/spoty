@@ -1,0 +1,153 @@
+---
+import Icon from "@/components/icons/Icon.astro";
+import Button from "@/components/ui/Button.astro";
+import { getSiteSettings } from "@/fetch/siteSettings";
+import { cn } from "@/lib/utils";
+import type { MenuColor } from "@/types";
+
+type Props = { menuColor?: MenuColor };
+
+// Reads the menu from Site settings. Scroll and mobile-menu state live in data attributes
+// on <header> (data-scrolled, data-hidden, data-open), set by the script below.
+const { menuColor = "light" } = Astro.props;
+const settings = await getSiteSettings();
+const siteName = settings?.siteName ?? "Spoty";
+const links = settings?.navLinks ?? [];
+const button = settings?.navButton;
+const light = menuColor === "light";
+const pathname = Astro.url.pathname;
+
+const isActive = (href?: string) => {
+  if (!href) return false;
+  const path = href.split("#")[0];
+  return path === "/" ? pathname === "/" : Boolean(path) && pathname.startsWith(path);
+};
+---
+
+<header
+  data-header
+  class={cn(
+    "group/header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,translate] duration-500 ease-out-expo",
+    "data-hidden:-translate-y-full",
+    "data-scrolled:bg-canvas/85 data-scrolled:shadow-[0_1px_0_var(--color-line)] data-scrolled:backdrop-blur-md"
+  )}
+>
+  <div
+    class={cn(
+      "mx-auto flex h-header max-w-site items-center justify-between px-4 transition-[height] duration-500 md:px-8 lg:px-13",
+      "group-data-scrolled/header:h-18",
+      // Once scrolled, the bar gets a light background, so light text turns dark
+      light ? "text-white group-data-scrolled/header:text-ink" : "text-ink"
+    )}
+  >
+    <a href="/" class="text-3xl font-medium">{siteName}</a>
+
+    <nav aria-label="Main" class="hidden items-center gap-10 lg:flex">
+      <ul class="flex items-center gap-10">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href ?? "/"}
+                class={cn(
+                  "relative text-base font-medium transition-opacity hover:opacity-70",
+                  "after:absolute after:-bottom-1 after:left-0 after:h-px after:bg-current after:transition-[width] after:duration-300",
+                  isActive(link.href) ? "after:w-full" : "after:w-0 hover:after:w-full"
+                )}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        light ? (
+          <>
+            <span class="contents group-data-scrolled/header:hidden">
+              <Button link={button} variant="outline-light" size="nav" />
+            </span>
+            <span class="hidden group-data-scrolled/header:contents">
+              <Button link={button} variant="outline-dark" size="nav" />
+            </span>
+          </>
+        ) : (
+          <Button link={button} variant="outline-dark" size="nav" />
+        )
+      }
+    </nav>
+
+    <button
+      type="button"
+      class="-mr-2 p-2 lg:hidden"
+      data-menu-open
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <Icon name="menu" />
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="invisible fixed inset-0 z-50 flex flex-col bg-ink px-4 pb-10 text-white opacity-0 transition-[opacity,visibility] duration-500 group-data-open/header:visible group-data-open/header:opacity-100 lg:hidden"
+    data-lenis-prevent
+  >
+    <div class="flex h-header items-center justify-between">
+      <a href="/" class="text-3xl">{siteName}</a>
+      <button type="button" class="-mr-2 p-2" data-menu-close aria-label="Close menu">
+        <Icon name="close" />
+      </button>
+    </div>
+    <nav aria-label="Mobile" class="mt-10 flex flex-1 flex-col">
+      <ul class="space-y-2">
+        {
+          links.map((link, i) => (
+            <li
+              class="translate-y-4 opacity-0 transition-[opacity,transform] duration-500 group-data-open/header:translate-y-0 group-data-open/header:opacity-100 group-data-open/header:delay-(--delay)"
+              style={{ "--delay": `${100 + i * 60}ms` }}
+            >
+              <a href={link.href ?? "/"} class="block py-2 text-5xl">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-auto">
+        <Button link={button} variant="white" class="w-full" />
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]")!;
+  const openButton = header.querySelector<HTMLButtonElement>("[data-menu-open]")!;
+  const toggle = (name: string, on: boolean) => header.toggleAttribute(`data-${name}`, on);
+
+  const setOpen = (open: boolean) => {
+    toggle("open", open);
+    openButton.setAttribute("aria-expanded", String(open));
+    if (open) toggle("hidden", false);
+  };
+  openButton.addEventListener("click", () => setOpen(true));
+  header.querySelector("[data-menu-close]")!.addEventListener("click", () => setOpen(false));
+  // Links to a section on the same page don't reload it, so close the menu ourselves
+  header.querySelectorAll("#mobile-menu a").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    toggle("scrolled", y > 40);
+    // Hide after the first screen while scrolling down; any scroll up brings it back
+    if (Math.abs(y - lastY) > 6) {
+      toggle("hidden", y > lastY && y > 400 && !header.hasAttribute("data-open"));
+      lastY = y;
+    }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+</script>

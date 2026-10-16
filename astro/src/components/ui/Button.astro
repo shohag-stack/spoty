@@ -1,0 +1,31 @@
+---
+import { buttonClasses, type ButtonSize, type ButtonVariant } from "@/lib/button";
+import { isExternal } from "@/lib/utils";
+import type { LinkData } from "@/types";
+import ButtonLabel from "./ButtonLabel.astro";
+
+type Props = {
+  link?: LinkData | null;
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  class?: string;
+};
+
+// Pill button from the design. Renders nothing without a label and link.
+const { link, variant = "black", size = "md", class: className } = Astro.props;
+const hasSlot = Astro.slots.has("default");
+const show = Boolean(link?.href && (link.label || hasSlot));
+const newTab = Boolean(link?.href && isExternal(link.href) && link.href.startsWith("http"));
+---
+
+{
+  show && (
+    <a
+      href={link!.href}
+      class={buttonClasses(variant, size, className)}
+      {...(newTab && { target: "_blank", rel: "noopener noreferrer" })}
+    >
+      <ButtonLabel>{hasSlot ? <slot /> : link!.label}</ButtonLabel>
+    </a>
+  )
+}

@@ -22,7 +22,8 @@ release-specific here, not in `CLAUDE.md` or `README.md` (both ship).
 1. Bump `version` in the root `package.json` when the release changes anything
    buyers see. The zip is named `<name>-<version>.zip`.
 2. Checks: `npm run lint` and `npx tsc --noEmit` in `frontend/`,
-   `npx tsc --noEmit` in `studio/`, and `npm run build` at the root. Stop and
+   `npx tsc --noEmit` in `studio/`, and `npm run build` and
+   `npm run astro:build` at the root. Stop and
    fix on failure.
 3. Shipped docs are buyer-safe: no project ID, emails or seller notes in
    `CLAUDE.md`, `README.md`, `.env.example` files or `.claude/commands/`.
@@ -43,6 +44,10 @@ Seller-only files left out of the zip: `MAINTAINER.md`, `zip.sh`,
 media folders) to the `rsync` list in `zip.sh` and note them here.
 
 ## Notes
+- `astro/` is the Astro port shipped in the same zip (one purchase, both
+  versions). Visually verified pixel-identical to `frontend/` at 1440px and
+  390px on every route (2026-10-16). Keep the two in step when changing a
+  section. Release checks also need `npm run astro:build` at the root.
 - `studio/sanity.config.ts` no longer loads `@sanity/vision`: the installed
   vision (4.x) resolves `sanity` 5 from the root (pulled in by `next-sanity` 12)
   and its types clash with the Studio's `sanity` 4. The dependency is still in

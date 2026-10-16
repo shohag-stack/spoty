@@ -1,0 +1,21 @@
+---
+import { cn } from "@/lib/utils";
+
+type Props = { class?: string; tone?: "dark" | "light" };
+
+// Card wrapper with a soft glow that follows the cursor.
+const { class: className, tone = "dark" } = Astro.props;
+---
+
+<div data-spotlight class={cn("group/spot relative isolate overflow-hidden", className)}>
+  <span
+    aria-hidden="true"
+    class={cn(
+      "pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover/spot:opacity-100",
+      tone === "dark"
+        ? "bg-[radial-gradient(420px_circle_at_var(--spot-x)_var(--spot-y),rgb(0_0_0/0.07),transparent_65%)]"
+        : "bg-[radial-gradient(420px_circle_at_var(--spot-x)_var(--spot-y),rgb(255_255_255/0.16),transparent_65%)]"
+    )}
+  ></span>
+  <slot />
+</div>

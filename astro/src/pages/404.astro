@@ -1,0 +1,13 @@
+---
+import Button from "@/components/ui/Button.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" menuColor="dark">
+  <div class="mx-auto flex min-h-[70svh] max-w-site flex-col items-start justify-end px-4 pt-40 md:px-8 lg:px-13">
+    <p class="text-subtle">404</p>
+    <h1 class="mt-2 text-5xl md:text-display">Out of bounds.</h1>
+    <p class="mt-4 max-w-md text-lg text-muted">This page doesn't exist, or it has moved.</p>
+    <Button link={{ label: "Back to home", href: "/" }} class="mt-8" />
+  </div>
+</BaseLayout>

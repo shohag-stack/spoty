@@ -11,10 +11,14 @@
     "seed": "node scripts/seed.mjs",
     "deploy:studio": "cd studio && sanity deploy",
     "deploy:schema": "cd studio && sanity manifest extract && sanity schema deploy",
-    "zip": "bash zip.sh"
+    "zip": "bash zip.sh",
+    "astro:dev": "npm-run-all --parallel astro:dev:* dev:studio",
+    "astro:dev:site": "cd astro && npm run dev",
+    "astro:build": "cd astro && npm run build"
   },
   "workspaces": [
     "frontend",
+    "astro",
     "studio"
   ],
   "overrides": {

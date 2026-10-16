@@ -1,0 +1,41 @@
+---
+import Parallax from "@/components/animation/Parallax.astro";
+import SplitHeading from "@/components/animation/SplitHeading.astro";
+import Button from "@/components/ui/Button.astro";
+import Pill from "@/components/ui/Pill.astro";
+import SanityImage from "@/components/ui/SanityImage.astro";
+import type { PageHeroSectionData } from "@/types";
+
+type Props = PageHeroSectionData;
+
+// Page-top banner for inner pages. Full-bleed, so no outer margin.
+const { backgroundImage, eyebrow, heading, text, button } = Astro.props;
+---
+
+<section class="relative flex min-h-150 overflow-hidden bg-ink md:h-165">
+  <Parallax speed={16} class="absolute inset-x-0 -inset-y-24">
+    <SanityImage image={backgroundImage} sizes="100vw" priority />
+  </Parallax>
+  <div class="absolute inset-0 bg-linear-to-tr from-black/65 via-black/25 to-black/30" aria-hidden="true"></div>
+
+  <div class="relative mx-auto flex w-full max-w-site flex-col justify-end px-4 pt-40 pb-14 text-white md:px-8 md:pb-18 lg:px-13">
+    {
+      eyebrow && (
+        <Pill tone="light" class="mb-6 w-fit md:mb-8">
+          {eyebrow}
+        </Pill>
+      )
+    }
+    <div class="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end lg:gap-16">
+      <SplitHeading text={heading} class="max-w-4xl text-5xl font-medium text-balance sm:text-6xl lg:text-7xl" />
+      {
+        (text || button?.href) && (
+          <div class="max-w-sm">
+            {text && <p class="text-base leading-relaxed text-white/85 md:text-lg">{text}</p>}
+            <Button link={button} variant="white" class="mt-6" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

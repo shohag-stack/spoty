@@ -1,0 +1,104 @@
+---
+import { toHTML } from "@portabletext/to-html";
+import Reveal from "@/components/animation/Reveal.astro";
+import SplitHeading from "@/components/animation/SplitHeading.astro";
+import Button from "@/components/ui/Button.astro";
+import CoachCard from "@/components/ui/CoachCard.astro";
+import Pill from "@/components/ui/Pill.astro";
+import SanityImage from "@/components/ui/SanityImage.astro";
+import { COACHES_PATH } from "@/lib/routes";
+import type { CoachCardData, CoachData } from "@/types";
+
+type Props = { coach: CoachData; otherCoaches: CoachCardData[] };
+
+// Template for /coaches/<slug>. Sections from Site settings follow it.
+const { coach, otherCoaches } = Astro.props;
+const firstName = coach.name.split(" ")[0];
+const bio = coach.bio?.length ? toHTML(coach.bio as Parameters<typeof toHTML>[0]) : "";
+---
+
+<!-- Page-top: padding for the space under the menu -->
+<section class="pt-32 md:pt-40">
+  <div class="mx-auto grid max-w-site gap-10 px-4 md:px-8 lg:grid-cols-2 lg:gap-20 lg:px-13">
+    <Reveal class="flex flex-col lg:py-6">
+      {coach.role && <Pill class="mb-6 w-fit">{coach.role}</Pill>}
+      <SplitHeading text={coach.name} class="text-5xl font-medium text-balance sm:text-6xl lg:text-display" />
+      {coach.summary && <p class="mt-6 max-w-lg text-xl leading-snug text-muted md:text-2xl">{coach.summary}</p>}
+
+      {
+        coach.specialties && coach.specialties.length > 0 && (
+          <ul class="mt-8 flex flex-wrap gap-2">
+            {coach.specialties.map((item) => (
+              <li class="rounded-full bg-white px-4 py-2 text-sm">{item}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      {
+        coach.stats && coach.stats.length > 0 && (
+          <dl class="mt-10 grid grid-cols-3 gap-3 lg:mt-auto lg:pt-10">
+            {coach.stats.map((stat) => (
+              <div class="rounded-card bg-white p-5">
+                <dd class="text-3xl md:text-4xl">{stat.value}</dd>
+                <dt class="mt-2 text-sm text-muted">{stat.label}</dt>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button link={{ label: `Book a session with ${firstName}`, href: "/book" }} />
+        <Button link={{ label: "All coaches", href: COACHES_PATH }} variant="outline-dark" />
+      </div>
+    </Reveal>
+
+    <Reveal variant="clip" delay={0.1} class="relative aspect-4/5 overflow-hidden rounded-card lg:aspect-auto lg:min-h-170">
+      <SanityImage image={coach.image} sizes="(min-width: 1024px) 50vw, 100vw" priority />
+    </Reveal>
+  </div>
+</section>
+
+{
+  (bio || coach.achievements?.length) && (
+    <section class="my-20 md:my-35">
+      <div class="mx-auto grid max-w-site gap-10 px-4 md:px-8 lg:grid-cols-[3fr_2fr] lg:gap-20 lg:px-13">
+        {bio && (
+          <Reveal>
+            <h2 class="text-4xl font-medium md:text-5xl">About {firstName}</h2>
+            <div class="mt-8 space-y-5 text-lg leading-relaxed text-muted" set:html={bio} />
+          </Reveal>
+        )}
+        {coach.achievements && coach.achievements.length > 0 && (
+          <Reveal delay={0.1} class="self-start rounded-card bg-white p-7 md:p-9">
+            <h2 class="text-2xl">Highlights</h2>
+            <ol class="mt-6 divide-y divide-line">
+              {coach.achievements.map((item, i) => (
+                <li class="flex gap-5 py-4">
+                  <span class="text-subtle tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  {item}
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        )}
+      </div>
+    </section>
+  )
+}
+
+{
+  otherCoaches.length > 0 && (
+    <section class="my-20 md:my-35">
+      <div class="mx-auto max-w-site px-4 md:px-8 lg:px-13">
+        <h2 class="text-4xl font-medium md:text-5xl">More coaches</h2>
+        <Reveal stagger class="mt-10 grid grid-cols-2 gap-3 md:gap-5 lg:grid-cols-3">
+          {otherCoaches.map((other) => (
+            <CoachCard coach={other} sizes="(min-width: 1024px) 33vw, 50vw" />
+          ))}
+        </Reveal>
+      </div>
+    </section>
+  )
+}

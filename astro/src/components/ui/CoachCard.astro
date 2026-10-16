@@ -1,0 +1,27 @@
+---
+import Tilt from "@/components/animation/Tilt.astro";
+import Icon from "@/components/icons/Icon.astro";
+import { coachHref } from "@/lib/routes";
+import type { CoachCardData } from "@/types";
+import SanityImage from "./SanityImage.astro";
+
+type Props = { coach: CoachCardData; sizes: string };
+
+// Portrait card with the name on the photo (same style as the testimonial photos).
+const { coach, sizes } = Astro.props;
+---
+
+<Tilt>
+  <a href={coachHref(coach.slug)} class="group relative block aspect-3/4 overflow-hidden rounded-card bg-line">
+    <SanityImage image={coach.image} sizes={sizes} class="transition-transform duration-700 group-hover:scale-105" />
+    <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/65 to-transparent px-5 pt-20 pb-5 text-white">
+      <p class="text-xl md:text-2xl">{coach.name}</p>
+      {coach.role && <p class="text-sm text-white/85">{coach.role}</p>}
+    </div>
+    <span
+      class="absolute top-4 right-4 grid size-12 scale-75 place-items-center rounded-full bg-white text-ink opacity-0 transition-[opacity,transform] duration-300 group-hover:scale-100 group-hover:opacity-100 group-focus-visible:scale-100 group-focus-visible:opacity-100"
+    >
+      <Icon name="arrow-up-right" />
+    </span>
+  </a>
+</Tilt>

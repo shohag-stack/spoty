@@ -10,3 +10,4 @@ dist/
 .turbo/
 *.zip
 seed/*.tar.gz
+.astro/

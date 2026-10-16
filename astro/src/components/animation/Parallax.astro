@@ -1,0 +1,14 @@
+---
+type Props = {
+  class?: string;
+  /** How far the element drifts while it crosses the screen, in % of its height. Negative moves up. */
+  speed?: number;
+};
+
+// Scroll-linked drift for photos (see scripts/motion.ts). Static when reduced motion is preferred.
+const { class: className, speed = -10 } = Astro.props;
+---
+
+<div class={className} data-parallax={speed}>
+  <slot />
+</div>

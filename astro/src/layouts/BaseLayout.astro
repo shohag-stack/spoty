@@ -1,0 +1,43 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import RaysoCta from "@/components/layout/RaysoCta.astro";
+import SiteHeader from "@/components/layout/SiteHeader.astro";
+import ShapeDefs from "@/components/ui/ShapeDefs.astro";
+import { getSiteSettings } from "@/fetch/siteSettings";
+import type { MenuColor } from "@/types";
+import "@/styles/global.css";
+
+type Props = {
+  /** Page title; the site name is added after it. Leave empty on the home page. */
+  title?: string;
+  description?: string;
+  menuColor?: MenuColor;
+};
+
+const { title, description, menuColor } = Astro.props;
+const settings = await getSiteSettings();
+const siteName = settings?.siteName ?? "Spoty";
+const metaDescription = description ?? settings?.description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} · ${siteName}` : siteName}</title>
+    {metaDescription && <meta name="description" content={metaDescription} />}
+  </head>
+  <body>
+    <ShapeDefs />
+    <SiteHeader menuColor={menuColor} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <RaysoCta />
+    <script>
+      import "@/scripts/motion";
+    </script>
+  </body>
+</html>

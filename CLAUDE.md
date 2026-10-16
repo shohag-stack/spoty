@@ -5,6 +5,13 @@ and `studio/` (Sanity). Dependencies install at the repo root (`npm install`
 from the root); `npm run dev` there starts both apps. Setup and deployment for
 a fresh copy are in `README.md`.
 
+`astro/` is an Astro port of `frontend/` with the same design, sections and
+Sanity queries (`astro/src/`: `pages/`, `components/sections/*.astro`,
+interactive parts as React islands in `components/islands/`, animations in
+`scripts/motion.ts` driven by `components/animation/*.astro`). A change to a
+section in one app usually needs the same change in the other; ask which app
+the user works in if it's unclear. Paths below refer to `frontend/`.
+
 **If `MAINTAINER.md` exists, read it too.** It holds the template author's notes
 (demo project, release process, open items) and isn't shipped to buyers.
 
@@ -244,11 +251,14 @@ list its sections, reuse existing ones, build the missing ones, then create the
   provider.
 - Products link to their `url` field (your online store) or `/book`; there is
   no cart or checkout.
+- The same two forms in the Astro version: `astro/src/components/islands/`.
 
 ## Done means
 - `npm run lint` and `npx tsc --noEmit` pass in `frontend/` (and `npx tsc --noEmit`
   in `studio/` after schema changes); `npm run build` passes before a release
-- The changed pages return 200 on the dev server (localhost:3000)
+- In `astro/`: `npm run build` passes (it runs `astro check` first)
+- The changed pages return 200 on the dev server (localhost:3000, or
+  localhost:4321 for Astro)
 - CLAUDE.md is updated when you add a section, route, pattern or convention.
   It ships to buyers, so keep it free of personal IDs, emails and seller notes
   (those go in `MAINTAINER.md`)

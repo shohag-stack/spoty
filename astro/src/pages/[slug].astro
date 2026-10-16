@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from "astro";
+import SectionRenderer from "@/components/sections/SectionRenderer.astro";
+import { getPageBySlug, getPageSlugs } from "@/fetch/page";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { COACHES_PATH } from "@/lib/routes";
+
+// Any page under "Other pages" (/about, /pricing, /shop, /book).
+// Listing pages with their own folder (e.g. /coaches) are rendered there instead.
+export const getStaticPaths = (async () => {
+  const slugs = await getPageSlugs();
+  return slugs.filter((slug) => `/${slug}` !== COACHES_PATH).map((slug) => ({ params: { slug } }));
+}) satisfies GetStaticPaths;
+
+const page = (await getPageBySlug(Astro.params.slug))!;
+---
+
+<BaseLayout title={page.title} description={page.description} menuColor={page.menuColor}>
+  <SectionRenderer sections={page.sections} />
+</BaseLayout>

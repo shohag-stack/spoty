@@ -1,0 +1,30 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import { FeatureGallery } from "@/components/islands/FeatureGallery";
+import Button from "@/components/ui/Button.astro";
+import SanityImage from "@/components/ui/SanityImage.astro";
+import { cn } from "@/lib/utils";
+import type { FeatureSplitSectionData } from "@/types";
+
+type Props = FeatureSplitSectionData;
+
+const { mainImage, heading, text, gallery, button, flip } = Astro.props;
+---
+
+<section class="my-20 md:my-35">
+  <div class="mx-auto grid max-w-site gap-12 px-4 md:px-8 lg:grid-cols-[652fr_604fr] lg:gap-20 lg:px-13">
+    <Reveal variant="clip" class={cn("relative aspect-4/5 overflow-hidden rounded-card lg:aspect-652/752", flip && "lg:order-2")}>
+      <SanityImage image={mainImage} sizes="(min-width: 1024px) 50vw, 100vw" />
+    </Reveal>
+
+    <div class="flex flex-col gap-12 lg:gap-20 lg:pt-31.5">
+      <Reveal>
+        <h2 class="max-w-151 text-4xl font-medium text-balance md:text-5xl lg:text-heading">{heading}</h2>
+      </Reveal>
+      <Reveal delay={0.1}>
+        <FeatureGallery client:visible images={gallery ?? []} text={text} />
+        <Button link={button} class="mt-8" />
+      </Reveal>
+    </div>
+  </div>
+</section>

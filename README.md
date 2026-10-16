@@ -9,6 +9,7 @@ remove and reorder, with no code needed.
 
 ```
 frontend/   the website (Next.js)
+astro/      the same website built with Astro (pick one, see "Astro version")
 studio/     the content editor (Sanity Studio)
 seed/       demo content: pages, coaches, products, images and videos
 ```
@@ -124,6 +125,51 @@ npm run deploy:studio
 5. Deploy. Published Studio changes appear on the live site within about a
    minute; no redeploy needed.
 
+## Astro version
+
+`astro/` is the same website built with [Astro](https://astro.build) instead
+of Next.js: same design, same sections, same Studio and content. Use whichever
+you prefer; both read the same Sanity project. You can delete the folder you
+don't use (and remove it from `workspaces` in the root `package.json`).
+
+**Set up:** follow steps 1–4 above, then:
+
+```bash
+cp astro/.env.example astro/.env.local
+```
+
+```bash
+# astro/.env.local
+PUBLIC_SANITY_PROJECT_ID=abc123xy
+PUBLIC_SANITY_DATASET=production
+```
+
+**Run it:** `npm run astro:dev` starts the Astro site
+(<http://localhost:4321>) and the Studio together.
+
+**Put it online (Vercel):** import the repository, set **Root Directory** to
+`astro`, and add `PUBLIC_SANITY_PROJECT_ID` and `PUBLIC_SANITY_DATASET`. Netlify
+and Cloudflare Pages work the same way (build command `npm run build`, output
+folder `dist`).
+
+The Astro site is static: pages are built from your content at deploy time,
+which makes it very fast and cheap to host. To publish Studio changes
+automatically, create a **Deploy Hook** in Vercel (Project → Settings → Git),
+then in [sanity.io/manage](https://www.sanity.io/manage) → your project →
+**API** → **Webhooks**, add a webhook with that URL that fires on create, update
+and delete. Every publish then rebuilds the site in about a minute.
+
+Where things are in `astro/src/`:
+
+- Pages and routes: `pages/` (`index.astro`, `[slug].astro`, `coaches/`)
+- Sections: `components/sections/*.astro`
+- Interactive parts (sliders, accordion, forms): `components/islands/*.tsx`,
+  small React components that load only where they're used
+- Scroll and hover animations: `scripts/motion.ts`, switched on by the
+  components in `components/animation/`
+- Colours and font sizes: the `@theme` block of `styles/global.css`
+- Sanity queries: `fetch/`
+
 ## Customising the design
 
 - Colours and font sizes live in the `@theme` block of
@@ -141,6 +187,8 @@ npm run deploy:studio
 |---|---|
 | `npm run dev` | Website and Studio together |
 | `npm run build` | Production build of the website |
+| `npm run astro:dev` | Astro website and Studio together |
+| `npm run astro:build` | Production build of the Astro website |
 | `npm run seed` | Import the demo content (replaces matching documents) |
 | `npm run deploy:studio` | Host the Studio on `<name>.sanity.studio` |
 | `npm run deploy:schema` | Upload the content model to Sanity (only needed for Sanity's AI and dashboard tools) |

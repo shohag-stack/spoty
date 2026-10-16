@@ -1,0 +1,30 @@
+---
+type Props = {
+  text: string;
+  as?: "h1" | "h2";
+  class?: string;
+  delay?: number;
+};
+
+// Headline whose words rise into place one after another on page load (see scripts/motion.ts).
+const { text, as: Tag = "h1", class: className, delay = 0.15 } = Astro.props;
+// Keep the editor's line breaks; each word is masked so it slides up from below.
+// The non-breaking space stays inside the mask, so it isn't collapsed at the inline-block's edge.
+const lines = text.split("\n").map((line) => line.split(" ").filter(Boolean));
+---
+
+<Tag class={className} data-split={delay}>
+  {
+    lines.map((words) => (
+      <span class="block">
+        {words.map((word) => (
+          <span class="-mb-[0.12em] inline-block overflow-hidden pb-[0.12em] align-top">
+            <span data-word class="inline-block">
+              {word}
+            </span>{"\u00a0"}
+          </span>
+        ))}
+      </span>
+    ))
+  }
+</Tag>
