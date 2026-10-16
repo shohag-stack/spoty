@@ -1,0 +1,34 @@
+---
+import { hasImage, imageAttrs } from "@/lib/image";
+import { cn } from "@/lib/utils";
+import type { SanityImage as SanityImageType } from "@/types";
+
+type Props = {
+  image?: SanityImageType | null;
+  sizes: string;
+  class?: string;
+  /** Above the fold: load right away instead of lazily */
+  priority?: boolean;
+  alt?: string;
+};
+
+// Fills its (relative) parent. Crops with object-cover around the Sanity hotspot.
+const { image, sizes, class: className, priority, alt } = Astro.props;
+const attrs = hasImage(image) ? imageAttrs(image, sizes) : null;
+---
+
+{
+  attrs && (
+    <img
+      src={attrs.src}
+      srcset={attrs.srcset}
+      sizes={attrs.sizes}
+      alt={alt ?? attrs.alt}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : undefined}
+      decoding="async"
+      class={cn("absolute inset-0 size-full object-cover", className)}
+      style={attrs.style}
+    />
+  )
+}

@@ -1,0 +1,72 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import Spotlight from "@/components/animation/Spotlight.astro";
+import Icon from "@/components/icons/Icon.astro";
+import Button from "@/components/ui/Button.astro";
+import Pill from "@/components/ui/Pill.astro";
+import SectionHeader from "@/components/ui/SectionHeader.astro";
+import { cn } from "@/lib/utils";
+import type { PricingSectionData } from "@/types";
+
+type Props = PricingSectionData;
+
+const { heading, text, plans, note } = Astro.props;
+---
+
+<section class="my-20 md:my-35">
+  <div class="mx-auto max-w-site px-4 md:px-8 lg:px-13">
+    <Reveal>
+      <SectionHeader heading={heading} text={text} />
+    </Reveal>
+    <Reveal stagger class="mt-12 grid gap-4 md:mt-16 md:gap-5 lg:grid-cols-3">
+      {
+        plans?.map((plan) => (
+          <div>
+            <Spotlight
+              tone={plan.featured ? "light" : "dark"}
+              class={cn(
+                "h-full rounded-card transition-transform duration-500 ease-out-expo hover:-translate-y-1.5",
+                plan.featured ? "bg-ink text-white" : "bg-white"
+              )}
+            >
+              <article class="flex h-full flex-col p-7 md:p-9">
+                <div class="flex items-center justify-between gap-4">
+                  <h3 class="text-2xl">{plan.name}</h3>
+                  {plan.featured && plan.badge && <Pill tone="solid">{plan.badge}</Pill>}
+                </div>
+                {plan.description && (
+                  <p class={cn("mt-3 leading-relaxed", plan.featured ? "text-white/70" : "text-muted")}>{plan.description}</p>
+                )}
+                <p class="mt-10 flex items-baseline gap-2">
+                  <span class="text-6xl md:text-7xl">{plan.price}</span>
+                  {plan.period && <span class={plan.featured ? "text-white/70" : "text-muted"}>{plan.period}</span>}
+                </p>
+                {plan.features && plan.features.length > 0 && (
+                  <ul class={cn("mt-8 space-y-3.5 border-t pt-8", plan.featured ? "border-white/15" : "border-line")}>
+                    {plan.features.map((feature) => (
+                      <li class="flex gap-3">
+                        <span
+                          class={cn(
+                            "mt-0.5 grid size-6 shrink-0 place-items-center rounded-full",
+                            plan.featured ? "bg-white text-ink" : "bg-ink text-white"
+                          )}
+                        >
+                          <Icon name="check" class="size-3.5" />
+                        </span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div class="mt-auto pt-10">
+                  <Button link={plan.button} variant={plan.featured ? "white" : "black"} class="w-full" />
+                </div>
+              </article>
+            </Spotlight>
+          </div>
+        ))
+      }
+    </Reveal>
+    {note && <p class="mt-8 text-center text-sm text-muted">{note}</p>}
+  </div>
+</section>

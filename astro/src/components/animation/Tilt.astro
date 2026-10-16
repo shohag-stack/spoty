@@ -1,0 +1,10 @@
+---
+type Props = { class?: string; max?: number };
+
+// Tilts its content in 3D toward the cursor (mouse only, skipped for reduced motion).
+const { class: className, max = 8 } = Astro.props;
+---
+
+<div class={className} data-tilt={max}>
+  <slot />
+</div>

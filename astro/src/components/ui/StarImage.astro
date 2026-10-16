@@ -1,0 +1,14 @@
+---
+import { cn } from "@/lib/utils";
+import type { SanityImage as SanityImageType } from "@/types";
+import SanityImage from "./SanityImage.astro";
+
+type Props = { image: SanityImageType; class?: string };
+
+// Photo clipped to the Figma "Star 6" mask (rotated 52°; the photo stays upright).
+const { image, class: className } = Astro.props;
+---
+
+<div class={cn("relative aspect-square [clip-path:url(#star-clip)]", className)}>
+  <SanityImage image={image} sizes="160px" />
+</div>

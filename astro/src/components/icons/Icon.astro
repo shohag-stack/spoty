@@ -1,0 +1,8 @@
+---
+import { icons, iconAttrs, type IconName } from "./icons";
+
+type Props = { name: IconName; class?: string };
+const { name, class: className } = Astro.props;
+---
+
+<svg {...iconAttrs(name)} class={className} set:html={icons[name].body} />

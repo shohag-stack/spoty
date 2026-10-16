@@ -1,0 +1,25 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import { CurvedCarousel } from "@/components/islands/CurvedCarousel";
+import Button from "@/components/ui/Button.astro";
+import type { ImageCarouselSectionData } from "@/types";
+
+type Props = ImageCarouselSectionData;
+
+// White band: full-bleed, so it uses inner padding instead of outer margins.
+const { heading, button, images } = Astro.props;
+---
+
+<section class="overflow-hidden bg-white py-20 md:pt-35 md:pb-10">
+  <Reveal class="mx-auto max-w-site px-4 md:px-8 lg:px-13">
+    <h2 class="mx-auto max-w-277 text-center text-4xl font-medium text-balance md:text-5xl lg:text-heading">{heading}</h2>
+  </Reveal>
+  <CurvedCarousel client:visible images={images ?? []} />
+  {
+    button?.href && (
+      <div class="mt-12 flex justify-center px-4">
+        <Button link={button} />
+      </div>
+    )
+  }
+</section>

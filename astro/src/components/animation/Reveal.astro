@@ -1,0 +1,17 @@
+---
+type Props = {
+  class?: string;
+  /** Animate each direct child one after another instead of the wrapper as a whole. */
+  stagger?: boolean;
+  delay?: number;
+  /** "clip" opens the element like a window instead of fading it up (for photos). */
+  variant?: "fade" | "clip";
+};
+
+// Fades content up as it scrolls into view (see scripts/motion.ts). Static when reduced motion is preferred.
+const { class: className, stagger = false, delay = 0, variant = "fade" } = Astro.props;
+---
+
+<div class={className} data-reveal={variant} data-stagger={stagger || undefined} data-delay={delay || undefined}>
+  <slot />
+</div>

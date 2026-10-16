@@ -36,7 +36,7 @@ fi
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
 rsync -a ./ "$STAGE/$NAME/" \
-  --exclude node_modules --exclude .next --exclude .sanity --exclude dist \
+  --exclude node_modules --exclude .next --exclude .astro --exclude .sanity --exclude dist \
   --exclude .git --exclude .turbo --exclude '.env.local' --exclude '.env.*.local' \
   --exclude .DS_Store --exclude '*.log' --exclude '*.tsbuildinfo' --exclude '*.zip' \
   --exclude /MAINTAINER.md --exclude /zip.sh --exclude /.claude/commands/zip-project.md

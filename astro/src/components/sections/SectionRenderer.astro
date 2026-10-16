@@ -1,0 +1,51 @@
+---
+import type { PageSection } from "@/types";
+import BookingSection from "./BookingSection.astro";
+import CardsSection from "./CardsSection.astro";
+import CoachesSection from "./CoachesSection.astro";
+import CtaSection from "./CtaSection.astro";
+import FaqSection from "./FaqSection.astro";
+import FeatureSplitSection from "./FeatureSplitSection.astro";
+import HeroSection from "./HeroSection.astro";
+import ImageCarouselSection from "./ImageCarouselSection.astro";
+import IntroSection from "./IntroSection.astro";
+import PageHeroSection from "./PageHeroSection.astro";
+import PricingSection from "./PricingSection.astro";
+import ProductsSection from "./ProductsSection.astro";
+import StatsSection from "./StatsSection.astro";
+import TestimonialsSection from "./TestimonialsSection.astro";
+
+type Props = { sections?: PageSection[] };
+
+// Section _type → component. Add new sections here.
+const COMPONENTS = {
+  heroSection: HeroSection,
+  pageHeroSection: PageHeroSection,
+  featureSplitSection: FeatureSplitSection,
+  imageCarouselSection: ImageCarouselSection,
+  testimonialsSection: TestimonialsSection,
+  ctaSection: CtaSection,
+  introSection: IntroSection,
+  statsSection: StatsSection,
+  cardsSection: CardsSection,
+  coachesSection: CoachesSection,
+  pricingSection: PricingSection,
+  faqSection: FaqSection,
+  productsSection: ProductsSection,
+  bookingSection: BookingSection,
+} as const;
+
+const { sections } = Astro.props;
+---
+
+{
+  sections?.map((section) => {
+    const Section = COMPONENTS[section._type] as ((props: PageSection) => unknown) | undefined;
+    // The wrapper carries the anchor id. It has no padding or border, so section margins still collapse through it.
+    return Section ? (
+      <div id={section.anchor || undefined} class="scroll-mt-20">
+        <Section {...section} />
+      </div>
+    ) : null;
+  })
+}

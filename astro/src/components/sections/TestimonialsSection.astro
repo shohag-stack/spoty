@@ -1,0 +1,20 @@
+---
+import { TestimonialSlider } from "@/components/islands/TestimonialSlider";
+import type { TestimonialData, TestimonialsSectionData } from "@/types";
+
+type Props = TestimonialsSectionData;
+
+const { heading, testimonials } = Astro.props;
+// Unpublished references come back as null
+const items = testimonials.filter((t): t is TestimonialData => Boolean(t));
+---
+
+{
+  items.length > 0 && (
+    <section class="my-20 md:my-35">
+      <div class="mx-auto max-w-site px-4 md:px-8 lg:px-13">
+        <TestimonialSlider client:visible heading={heading} items={items} />
+      </div>
+    </section>
+  )
+}

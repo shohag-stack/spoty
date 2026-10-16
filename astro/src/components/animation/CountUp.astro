@@ -1,0 +1,8 @@
+---
+type Props = { value: string; class?: string };
+
+// Counts a figure up from zero when it scrolls into view (see scripts/motion.ts). Renders the final value.
+const { value, class: className } = Astro.props;
+---
+
+<span class={className} data-countup={value}>{value}</span>

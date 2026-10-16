@@ -1,0 +1,49 @@
+---
+import Reveal from "@/components/animation/Reveal.astro";
+import { BookingForm } from "@/components/islands/BookingForm";
+import SanityImage from "@/components/ui/SanityImage.astro";
+import { hasImage } from "@/lib/image";
+import type { BookingSectionData } from "@/types";
+
+type Props = BookingSectionData;
+
+const { heading, text, services, buttonLabel, image, contactItems } = Astro.props;
+---
+
+<section class="my-20 md:my-35">
+  <div class="mx-auto grid max-w-site gap-4 px-4 md:px-8 lg:grid-cols-[7fr_4fr] lg:gap-5 lg:px-13">
+    <Reveal class="rounded-card bg-white p-6 md:p-12">
+      <h2 class="max-w-lg text-4xl font-medium text-balance md:text-5xl">{heading}</h2>
+      {text && <p class="mt-4 max-w-lg leading-relaxed text-muted">{text}</p>}
+      <BookingForm client:visible services={services ?? []} buttonLabel={buttonLabel ?? "Send booking request"} />
+    </Reveal>
+
+    <Reveal delay={0.1} class="flex flex-col rounded-card bg-ink p-2.5 text-white">
+      {
+        hasImage(image) && (
+          <div class="relative aspect-4/3 overflow-hidden rounded-card">
+            <SanityImage image={image} sizes="(min-width: 1024px) 33vw, 100vw" />
+          </div>
+        )
+      }
+      <dl class="space-y-6 p-6 md:p-8">
+        {
+          contactItems?.map((item) => (
+            <div>
+              <dt class="text-sm text-white/50">{item.label}</dt>
+              <dd class="mt-1 text-lg whitespace-pre-line">
+                {item.href ? (
+                  <a href={item.href} class="hover:underline">
+                    {item.value}
+                  </a>
+                ) : (
+                  item.value
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </Reveal>
+  </div>
+</section>

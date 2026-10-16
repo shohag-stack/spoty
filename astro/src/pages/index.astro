@@ -1,0 +1,12 @@
+---
+import SectionRenderer from "@/components/sections/SectionRenderer.astro";
+import { getHomePage } from "@/fetch/page";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const page = await getHomePage();
+if (!page) throw new Error('No home page in Sanity: create the page with _id "home" (or run `npm run seed`).');
+---
+
+<BaseLayout description={page.description} menuColor={page.menuColor}>
+  <SectionRenderer sections={page.sections} />
+</BaseLayout>

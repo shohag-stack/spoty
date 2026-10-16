@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from "astro";
+import CoachProfile from "@/components/coach/CoachProfile.astro";
+import SectionRenderer from "@/components/sections/SectionRenderer.astro";
+import { getCoach, getCoachSlugs, getOtherCoaches } from "@/fetch/coach";
+import { getSiteSettings } from "@/fetch/siteSettings";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export const getStaticPaths = (async () => {
+  const slugs = await getCoachSlugs();
+  return slugs.map((slug) => ({ params: { slug } }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const [coach, otherCoaches, settings] = await Promise.all([getCoach(slug), getOtherCoaches(slug), getSiteSettings()]);
+---
+
+<BaseLayout title={coach!.name} description={coach!.summary} menuColor="dark">
+  <CoachProfile coach={coach!} otherCoaches={otherCoaches} />
+  <SectionRenderer sections={settings?.coachPageSections} />
+</BaseLayout>
