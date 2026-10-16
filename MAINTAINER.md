@@ -48,6 +48,9 @@ media folders) to the `rsync` list in `zip.sh` and note them here.
   versions). Visually verified pixel-identical to `frontend/` at 1440px and
   390px on every route (2026-10-16). Keep the two in step when changing a
   section. Release checks also need `npm run astro:build` at the root.
+- `astro/package.json` uses the same React range as the root (`^19.0.0`) on
+  purpose: `@astrojs/react` is hoisted to the root and uses the root React, so a
+  second React pinned inside `astro/` can break hooks during the build.
 - `studio/sanity.config.ts` no longer loads `@sanity/vision`: the installed
   vision (4.x) resolves `sanity` 5 from the root (pulled in by `next-sanity` 12)
   and its types clash with the Studio's `sanity` 4. The dependency is still in
