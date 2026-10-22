@@ -8,11 +8,11 @@ const TEMPLATE_URL = "https://www.rayso.studio/templates/spoty-tennis-club-and-s
 
 const slides = [
   {
-    bg: 'https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg',
+    bg: 'https://ik.imagekit.io/tl6thf5xd/coverjpg.jpg',
     type: 'logo',
   },
   {
-    bg: 'https://res.cloudinary.com/dq9ckspti/image/upload/v1777533939/coverjpg_uf6mej.jpg',
+    bg: 'https://ik.imagekit.io/tl6thf5xd/coverjpg.jpg',
     type: 'text',
     text: 'Premium Next.js Templates',
   },
@@ -63,7 +63,7 @@ export function RaysoCta() {
               <div className="relative z-11 text-white text-center flex justify-center items-center">
                 {slide.type === 'logo' ? (
                   <Image
-                    src="https://res.cloudinary.com/dq9ckspti/image/upload/v1777534388/rayso-logo_fgdmli.png"
+                    src="https://ik.imagekit.io/tl6thf5xd/rayso-logo.png"
                     width={170}
                     height={49}
                     unoptimized
