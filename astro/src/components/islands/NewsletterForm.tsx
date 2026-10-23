@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { buttonClasses } from "@/lib/button";
 import { ButtonLabel } from "./ButtonLabel";
 
@@ -7,7 +7,7 @@ type Props = { placeholder: string; buttonLabel: string };
 export function NewsletterForm({ placeholder, buttonLabel }: Props) {
   const [sent, setSent] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     // TODO(dev): send the email address to your newsletter provider (Mailchimp, ConvertKit, Resend audiences…).
     setSent(true);

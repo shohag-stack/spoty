@@ -43,14 +43,25 @@ Seller-only files left out of the zip: `MAINTAINER.md`, `zip.sh`,
 `.claude/commands/zip-project.md`. Add template-specific exclusions (e.g. unused
 media folders) to the `rsync` list in `zip.sh` and note them here.
 
+`zip.sh` also strips the floating "Get this Template" card (`RaysoCta` in both
+apps): it shows on the live preview only, so the staged copy loses both
+component files and their lines in `frontend/app/layout.tsx` and
+`astro/src/layouts/BaseLayout.astro`, and the script aborts if `RaysoCta` is
+still referenced. Zips before 1.1.2 still contained the card.
+
 ## Notes
 - `astro/` is the Astro port shipped in the same zip (one purchase, both
   versions). Visually verified pixel-identical to `frontend/` at 1440px and
   390px on every route (2026-10-16). Keep the two in step when changing a
   section. Release checks also need `npm run astro:build` at the root.
-- `astro/package.json` uses the same React range as the root (`^19.0.0`) on
-  purpose: `@astrojs/react` is hoisted to the root and uses the root React, so a
-  second React pinned inside `astro/` can break hooks during the build.
+- Dependencies updated to the latest releases on 2026-10-23 (Astro 7.4.2,
+  Tailwind 4.3, React 19.3). TypeScript stays on 6 because `astro check` doesn't
+  support 7 yet. Astro 7.4 needs Node.js 22.23.4 or newer.
+- There must be one React for `astro/`: `@astrojs/react` is hoisted to the root
+  and uses the root React, so a second React inside `astro/node_modules` breaks
+  hooks during the build. After changing React versions, check that
+  `astro/node_modules/react` doesn't exist (`npm update react react-dom` at the
+  root moves it up).
 - `studio/sanity.config.ts` no longer loads `@sanity/vision`: the installed
   vision (4.x) resolves `sanity` 5 from the root (pulled in by `next-sanity` 12)
   and its types clash with the Studio's `sanity` 4. The dependency is still in

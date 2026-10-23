@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
 import { buttonClasses } from "@/lib/button";
 import { ButtonLabel } from "./ButtonLabel";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ const label = "mb-2 block text-sm text-muted";
 export function BookingForm({ services, buttonLabel }: { services: string[]; buttonLabel: string }) {
   const [sent, setSent] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     // TODO(dev): send the booking request (e.g. a route handler that emails it with Resend, or your booking system's API).
     setSent(true);
