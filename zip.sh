@@ -41,7 +41,15 @@ rsync -a ./ "$STAGE/$NAME/" \
   --exclude .DS_Store --exclude '*.log' --exclude '*.tsbuildinfo' --exclude '*.zip' \
   --exclude /MAINTAINER.md --exclude /zip.sh --exclude /.claude/commands/zip-project.md
 
+# The floating "Get this Template" card is for the live preview only: drop the
+# component and its import/usage lines from both layouts.
+rm -f "$STAGE/$NAME/frontend/components/layout/RaysoCta.tsx" "$STAGE/$NAME/astro/src/components/layout/RaysoCta.astro"
+for f in "$STAGE/$NAME/frontend/app/layout.tsx" "$STAGE/$NAME/astro/src/layouts/BaseLayout.astro"; do
+  sed -i '' '/RaysoCta/d' "$f"
+done
+
 # 3. Safety checks on what would ship
+! grep -rq "RaysoCta" "$STAGE" --exclude='*.tar.gz' || fail "RaysoCta still referenced in: $(grep -rl "RaysoCta" "$STAGE" --exclude='*.tar.gz' | sed "s|$STAGE/||")"
 LEAKED=$(find "$STAGE" -name '.env*' ! -name '.env.example')
 [ -z "$LEAKED" ] || fail "env file would ship: $LEAKED"
 if [ -n "$PROJECT_ID" ] && grep -rlF "$PROJECT_ID" "$STAGE" --exclude='*.tar.gz' >/dev/null; then

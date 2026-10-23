@@ -16,7 +16,7 @@ seed/       demo content: pages, coaches, products, images and videos
 
 ## What you need
 
-- [Node.js](https://nodejs.org) 20.9 or newer, with npm
+- [Node.js](https://nodejs.org) 22.23.4 or newer, with npm (the Astro version needs it)
 - A free [Sanity](https://www.sanity.io) account
 - A free [Vercel](https://vercel.com) account to put the site online
 
